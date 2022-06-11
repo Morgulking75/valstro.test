@@ -1,5 +1,6 @@
 This NodeJS console app communicates with a specific docker instance using sockets to search the Star Wars Character API. 
 
+Download npm packages: npm i
 
 Compile with the command: npm run-script compile
 
