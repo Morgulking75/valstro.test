@@ -1,9 +1,11 @@
 export class TIE implements Spinner {
-    interval = 80;
+    interval = 150;
     frames = [
-        " |o|  <-o->   |o| ",
-        "|o|  <-o->   |o|  ",
-        " |o|  <-o-> |o|   ",
-        "  |o|  <-o-> |o|  ",
+        "  |o|   <-o->   |o| ",
+        "  |o|  <-o->     |o|",
+        "   |o|  <-o->   |o|",
+        "  |o|  <-o->     |o|",
+        "   |o|  <-o->   |o|",
+        "   |o|   <-o->   |o|",
     ];
 }

@@ -4,15 +4,16 @@ import { stdin, stdout } from 'process';
 import ora from 'ora';
 import chalk from 'chalk';
 import { TIE } from "./spinners/TIE";
+import { XWing } from "./spinners/XWing";
+import { Lightsaber } from "./spinners/Lightsaber";
 
 const spinner = ora();
+const spinners = [new TIE(), new XWing(), new Lightsaber()];
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io("http://localhost:3000/");
 const rl = readline.createInterface({
   input: stdin,
   output: stdout
 });
-
-spinner.spinner = new TIE();
 
 socket.on("connect", () => {
   console.log(`Connected: ${socket.id}`); 
@@ -58,6 +59,7 @@ function prompt(): void {
         rl.close();
       }
   
+      spinner.spinner = spinners[Math.floor(Math.random() * spinners.length)];
       spinner.start(`Searching for ${line}`);
 
       socket.emit("search", { query: line });  
@@ -69,17 +71,14 @@ function prompt(): void {
 function formatMovies(films: string): string {
   let filmArr = films.split(', ');
 
-  if(filmArr.length === 0) {
-    return "";
+  switch (filmArr.length) {
+    case 0:
+      return "";
+    case 1:
+      return chalk.italic(filmArr[0]);
+    case 2:
+      return `${chalk.italic(filmArr[0])} and ${chalk.italic(filmArr[1])}`;
+    default:
+      return chalk.italic(filmArr.slice(0, -1).join(', ')) + ', and ' + chalk.italic(filmArr.slice(-1));
   }
-
-  if(filmArr.length === 1) {
-    return chalk.italic(filmArr[0]);
-  }
-
-  if(filmArr.length === 2) {
-    return `${chalk.italic(filmArr[0])} and ${chalk.italic(filmArr[1])}`;
-  }
-  
-  return chalk.italic(filmArr.slice(0, -1).join(', ')) + ', and ' + chalk.italic(filmArr.slice(-1));
 }
